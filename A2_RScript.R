@@ -134,3 +134,35 @@ ggplot(matches, aes(x = HomeTeamScore)) +
 # while the 0-1 goals contains significant number of observations, the 4+ goals contains fewer observations, indicating
 # that matches in which the away team scores 4 or more goals are relatively uncommon. Moreover, although there are few matches
 # recorded five or more goals, these high-scoring goals are occasionally distributed across different groups of away team score.
+
+
+## Question 3
+# The matches with a penalty shootout have already been filtered out in Question 1
+print(penalty_matches)
+
+# Top 5 Home Teams in Penalty Shootouts
+topHomePenalty <- penalty_matches %>% # Count the number of matches each home team participated in
+  group_by(HomeTeamID) %>% # Group all matches by the HomeTeamID
+  summarize(NumberOfMatches = n(), .groups = "drop") %>% # Count the number of matches for each home team
+  left_join(teams, by = c("HomeTeamID" = "TeamID")) %>% # The TeamName and TeamCode are stored in the teams dataset, joining the teams datatset using HomeTeamID and TeamID
+  select(TeamName, TeamCode, NumberOfMatches) %>% # Keep only required columns
+  arrange(desc(NumberOfMatches)) %>% # Sort teams from the highest to the lowest number of matches
+  slice_head(n = 5) # Return only the top 5 home teams
+topHomePenalty # Display the top 5 home teams in penalty shootouts
+
+# Top 5 Away Teams in Penalty Shootouts
+topAwayPenalty <- penalty_matches %>% # Count the number of matches each away team participated in
+  group_by(AwayTeamID) %>% # Group all matches by the AwayTeamID
+  summarize(NumberOfMatches = n(), .groups = "drop") %>% # Count the number of matches for each away team
+  left_join(teams, by = c("AwayTeamID" = "TeamID")) %>% # The TeamName and TeamCode are stored in the teams dataset, joining the teams datatset using AwayTeamID and TeamID
+  select(TeamName, TeamCode, NumberOfMatches) %>% # Keep only required columns
+  arrange(desc(NumberOfMatches)) %>% # Sort teams from the highest to the lowest number of matches
+  slice_head(n = 5) # Return only the top 5 away teams
+topAwayPenalty # Display the top 5 away teams in penalty shootouts
+
+# Discussion: The results indicate that Argentina, Brazil, Spain, the Netherlands, and West Germany were the top 5 home teams 
+# participated in FIFA World Cup matches decided by penalty shootouts. On the away team side, France, Argentina, England, Croatia,
+# and Italy were the top five. There is different between the rankings of home teams and away teams, with only Argentina appearing
+# on both lists. Viewing the two lists, France recorded the highest number of participation of an away team in penalty matches with
+# 5 matches, while Argentina, Brazil, and Spain shared the highest number of home appearance with each participate 4 matches. Therefore,
+# the top national teams participating in matches with penalty shootouts were not identical when home and away matches were considered separately.
