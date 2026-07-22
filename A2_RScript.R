@@ -166,3 +166,48 @@ topAwayPenalty # Display the top 5 away teams in penalty shootouts
 # on both lists. Viewing the two lists, France recorded the highest number of participation of an away team in penalty matches with
 # 5 matches, while Argentina, Brazil, and Spain shared the highest number of home appearance with each participate 4 matches. Therefore,
 # the top national teams participating in matches with penalty shootouts were not identical when home and away matches were considered separately.
+
+## Question 4
+# While there are many factors influence the match outcome (Result) in the FIFA World Cup, this assignment will choose Stage and ExtraTime as two main factors for following analysis
+
+# Factor 1: Stage
+# Create table to present the influence of Stage on Result
+stage_result_table <- table(matches$Stage, matches$Result) # Create frequency table
+stage_result_table # View the table
+round(prop.table(stage_result_table, 1) * 100, 1) # View the table with percentage to support the analysis
+# Create a proportional stacked bar chart to compare match results across stages
+ggplot(matches, aes(x = Stage, fill = Result)) +
+  geom_bar(position = "fill") + # Draw stacked bars scaled to proportions (each bar sums to 100%) 
+  scale_y_continuous(labels = scales::percent) + # Display the y-axis as percentages instead of proportions
+  labs(title = "Match Result Distribution by Competition Stage",
+       x = "Competition Stage",
+       y = "Percentage of Matches",
+       fill = "Result") +
+  theme_minimal()
+# Discussion on findings: The distribution of match result varies across different competition stages. Home team win accounts for
+# for largest proportion of results in every stage. The final round and the Round of 16 show the highest proportion of home team
+# victories, with home team winning more than third quarters of the number of matches. In contrast, the Group Stage and Second
+# Group Stage have a noticeably higher proportions of draws more than knockout stages, indicating that draw matches are commonly
+# occur in the beginning of the tournament. Away team has a consistent proportion across stages, accounting for around one-quarter
+# to one-third of matches in a tournament. To conclude, competition stage is associated with changes of match outcomes with a
+# reduced frequency of draws in knockout rounds.
+
+# Factor 2: Extra Time
+# Create table to present the influence of Extra Time on Result
+extratime_result_table <- table(matches$ExtraTime, matches$Result) # Create frequency table
+extratime_result_table # View the table
+round(prop.table(extratime_result_table, 1) * 100, 1) # View the table with percentage to support the analysis
+# Create a proportional stacked bar chart to compare match results by Extra Time
+ggplot(matches, aes(x = ExtraTime, fill = Result)) +
+  geom_bar(position = "fill") + # Draw stacked bars scaled to proportions (each bar sums to 100%)
+  scale_y_continuous(labels = scales::percent) + # Display the y-axis as percentage instead of proportions
+  labs(title = "Match Result Distribution by Extra Time",
+       x = "Extra Time",
+       y = "Percentage of Matches",
+       fill = "Result") +
+  theme_minimal() 
+# Discussion on findings: The distribution of match outcomes has slightly difference depending on the match proceed extra time or
+# not. Matches with extra time recorded a lower proportion of draw and a higher proportion of away team wins compared with matches
+# within regular time. Additionally, the proportion of home team win is generally similar between two groups, making up more than 
+# half of all matches in both case. In conclusion, the difference is modest, indicating that while extra time influences match results
+# home team victories remain nearly the same whether extra time is proceeded.
